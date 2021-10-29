@@ -1,3 +1,4 @@
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,7 +16,7 @@ public class ShareLaneTests {
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
+        WebDriverManager.chromedriver().setup();
         //Open browser
         driver = new ChromeDriver();
         driver.manage().window().maximize();
