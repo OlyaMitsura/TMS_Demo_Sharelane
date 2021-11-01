@@ -29,7 +29,7 @@ public class ShareLaneTests {
     }
 
     @Test
-    void zipCodePositiveTest() {
+    public void zipCodePositiveTest() {
 
         //Navigate to ShareLane (https://www.sharelane.com/)
         driver.get("https://www.sharelane.com/");
@@ -64,10 +64,11 @@ public class ShareLaneTests {
         maxValueZipCode.sendKeys("123456789012345678901234567890");
         WebElement continueButton = driver.findElement(By.cssSelector("input[value = 'Continue']"));
         continueButton.click();
-        WebElement registerButton = driver.findElement(By.cssSelector("input[value = 'Register']"));
-        Assert.assertTrue(registerButton.isDisplayed(), "Register button should be displayed");
+        WebElement errorMessage = driver.findElement(By.className("error_message"));
+        Assert.assertEquals(errorMessage.getText(), "Oops, error on page. ZIP code should have 5 digits");
     }
 
+    @Test
     public void emptyZipCodeTest() {
         driver.get("https://www.sharelane.com/");
         WebElement enterButton = driver.findElement(By.cssSelector("a[href='../cgi-bin/main.py']"));
@@ -76,10 +77,10 @@ public class ShareLaneTests {
         signUpLink.click();
         WebElement continueButton = driver.findElement(By.cssSelector("input[value = 'Continue']"));
         continueButton.click();
-        WebElement errorMessage = driver.findElement(By.cssSelector("error_message"));
+        WebElement errorMessage = driver.findElement(By.className("error_message"));
         Assert.assertTrue(errorMessage.isDisplayed(), "Oops, error on page. ZIP code should have 5 digits");
     }
-
+@Test
     public void zipCode3DigitsTest() {
         driver.get("https://www.sharelane.com/");
         WebElement enterButton = driver.findElement(By.cssSelector("a[href='../cgi-bin/main.py']"));
@@ -91,18 +92,23 @@ public class ShareLaneTests {
         zipCode3DigitsTest.sendKeys("123");
         WebElement continueButton = driver.findElement(By.cssSelector("input[value = 'Continue']"));
         continueButton.click();
-        WebElement errorMessage = driver.findElement(By.cssSelector("error_message"));
+        WebElement errorMessage = driver.findElement(By.className("error_message"));
         Assert.assertEquals(errorMessage.getText(), "Oops, error on page. ZIP code should have 5 digits");
     }
-
+@Test //negative test
     public void zipCode6DigitsTest() {
-        //Open browser
-        //Navigate to ShareLane (https://www.sharelane.com/)
-        // Click "Sign Up" link
-        // Enter 6 digits to Zip code field
-        // Click "Continue"
-        // Verify that user stays on the same page
-
+        driver.get("https://www.sharelane.com/");
+        WebElement enterButton = driver.findElement(By.cssSelector("a[href='../cgi-bin/main.py']"));
+        enterButton.click();
+        WebElement signUpLink = driver.findElement(By.cssSelector("a[href='./register.py']"));
+        signUpLink.click();
+        WebElement zipCodeInput = driver.findElement(By.name("zip_code"));
+        WebElement zipCode6DigitsTest = driver.findElement(By.name("zip_code"));
+        zipCode6DigitsTest.sendKeys("123456");
+        WebElement continueButton = driver.findElement(By.cssSelector("input[value = 'Continue']"));
+        continueButton.click();
+        WebElement errorMessage = driver.findElement(By.className("error_message"));
+        Assert.assertEquals(errorMessage.getText(), "Oops, error on page. ZIP code should have 5 digits");
     }
 
 }
